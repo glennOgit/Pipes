@@ -2,6 +2,9 @@
 
 
 #get fastq file name for read 1 and read two and store into variables
+source module load samtools
+source module load bwa
+source module load python
 while getopts r:p:h option
 	do
 		case "${option}"
@@ -33,6 +36,7 @@ do
 			bwa mem -t 32 /gpfs/home/goliveir/Refs/$ref ${sampleID}_trim_R1.fastq ${sampleID}_trim_R2.fastq | samtools view -@ 16 -bS - | samtools sort -@ 16 - > $sampleID.srt.bam
 			rm ${sampleID}_trim_R1.fastq
 			rm ${sampleID}_trim_R2.fastq
+                        samtools index $sampleID.srt.bam
 		fi
 done
 done
